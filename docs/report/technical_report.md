@@ -201,7 +201,14 @@ The results provide a reproducible starting point for further investigation, but
 
 ## References
 
-**To complete before submission:** Add verified references on FTP security, authentication-log analysis, threshold-based intrusion detection, classification metrics, and reproducible cybersecurity research. Each reference should be read and cited in the relevant section; do not include sources that have not been checked.
+
+[1] M. Allman and S. Ostermann, “RFC 2577: FTP Security Considerations,” RFC Editor, May 1999. Available: https://www.rfc-editor.org/rfc/rfc2577
+
+[2] MITRE, “Brute Force: Password Guessing (T1110.001),” MITRE ATT&CK. Available: https://attack.mitre.org/techniques/T1110/001/
+
+[3] K. Kent and M. Souppaya, *Guide to Computer Security Log Management*, NIST Special Publication 800-92, National Institute of Standards and Technology, September 2006. https://doi.org/10.6028/NIST.SP.800-92
+
+[4] scikit-learn developers, “f1_score — scikit-learn documentation.” Available: https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html
 
 ## Appendix A: Reproduction commands
 
