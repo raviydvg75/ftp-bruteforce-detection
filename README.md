@@ -1,23 +1,36 @@
-FTP Brute-Force Detection
-A reproducible cybersecurity research project that explores detecting repeated FTP authentication failures from security logs using a configurable sliding time window. The project includes a Python detection pipeline, evaluation utilities, and a Streamlit dashboard for inspecting authentication events and alerts.
-Research note: This is a research prototype, not a production security control. Sample logs are synthetic and must not be presented as evidence of real-world detection performance.
+# FTP Brute-Force Detection
 
-Project goals
-- Parse authentication events from log data.
-- Group failed login attempts by source IP address.
-- Detect repeated failures using a configurable threshold and time window.
-- Evaluate detection behavior using metrics such as precision, recall, F1-score, and false-positive rate.
-- Make experiments easier to reproduce and inspect.
-Features
-- Configurable failed-login threshold and time window.
-- Python-based event parsing and detection.
-- Evaluation scripts for labelled datasets and threshold experiments.
-- Streamlit dashboard for viewing events and generated alerts.
-- Synthetic FTP authentication log for local testing.
-Repository structure
+A reproducible cybersecurity research project focused on detecting repeated FTP authentication failures using security logs and a configurable sliding time window. The project includes a Python-based detection pipeline, evaluation utilities, and a Streamlit dashboard for monitoring authentication events and generated alerts.
+
+> **Research note:** This project is a research prototype. The included sample logs are synthetic and must not be presented as evidence of real-world detection performance.
+
+## Project Objectives
+
+- Detect repeated FTP authentication failures from security logs.
+- Identify suspicious source IP addresses using configurable thresholds.
+- Evaluate detection performance using standard classification metrics.
+- Provide a dashboard for inspecting authentication events and alerts.
+- Support reproducible experiments for cybersecurity research and evaluation.
+- Demonstrate practical security monitoring and detection engineering skills.
+
+## Features
+
+- **Log analysis:** Process authentication events from supported log formats.
+- **Brute-force detection:** Identify repeated failed login attempts within a configurable time window.
+- **Configurable thresholds:** Adjust the number of failures required to generate an alert.
+- **Streamlit dashboard:** Visualize events, suspicious IP addresses, and detection alerts.
+- **Evaluation metrics:** Calculate accuracy, precision, recall, F1-score, and false-positive rate.
+- **Threshold experiments:** Compare detection outcomes across different thresholds.
+- **Synthetic test data:** Test the detector without requiring real user credentials or production logs.
+- **Alert export:** Export generated alerts to CSV where supported by the dashboard.
+
+## Repository Structure
+
+```text
 ftp-bruteforce-detection/
 ├── app.py
 ├── requirements.txt
+├── README.md
 ├── src/
 │   ├── parser.py
 │   ├── detector.py
@@ -29,74 +42,169 @@ ftp-bruteforce-detection/
 ├── data/
 │   └── ftp_bruteforce_sample.log
 └── tests/
-The exact files may vary as the project evolves. Keep datasets, scripts, and documentation aligned with the actual repository contents.
-Requirements
-- Python 3.10 or newer is recommended.
-- pip and Python virtual-environment support.
-- Linux is recommended for testing against Linux authentication logs.
-- For the dashboard, install the dependencies listed in requirements.txt.
-Setup
-Clone the repository and enter its directory:
+```
+
+The structure above describes the intended organization. Update it to match the files actually present in the repository.
+
+## Technology Stack
+
+- **Language:** Python
+- **Dashboard:** Streamlit
+- **Data processing:** Pandas
+- **Detection method:** Sliding-window threshold detection
+- **Testing:** Python unit tests
+- **Version control:** Git and GitHub
+- **Research focus:** Reproducible cybersecurity detection evaluation
+
+## Getting Started
+
+### 1. Clone the repository
+
+```bash
 git clone https://github.com/raviydvg75/ftp-bruteforce-detection.git
 cd ftp-bruteforce-detection
-Create and activate a virtual environment:
+```
+
+### 2. Create a virtual environment
+
+On Linux:
+
+```bash
 python3 -m venv .venv
 source .venv/bin/activate
-Install dependencies:
+```
+
+### 3. Install dependencies
+
+```bash
 python -m pip install --upgrade pip
 pip install -r requirements.txt
-Run the dashboard
-Start Streamlit from the repository root:
+```
+
+### 4. Run the dashboard
+
+```bash
 python -m streamlit run app.py
-Streamlit will print a local URL (usually http://localhost:8501) to open in your browser.
-In the dashboard, select the available input mode, configure the failure threshold and time window, then inspect the events and alerts. For a quick test, use the synthetic sample log if the dashboard supports uploaded log files.
-Test with the synthetic log
-The repository's sample log is synthetic and contains simulated FTP/PAM authentication-failure entries. It is intended to exercise log parsing and alerting logic; it is not a capture from a real system.
-If the sample is stored at data/ftp_bruteforce_sample.log, you can inspect it with:
-head data/ftp_bruteforce_sample.log
-wc -l data/ftp_bruteforce_sample.log
-For an upload-based dashboard, choose Upload log file and select data/ftp_bruteforce_sample.log.
-With a threshold of 5 failures in a 10-minute window, the source IP 192.168.56.101 is intended to trigger an alert if the parser recognizes the sample's log format and the dashboard evaluates the historical timestamps correctly. Other source IPs have fewer failures. Actual outcomes depend on the current parser and detection implementation.
-Detection approach
-At a high level, the detector:
-1. Reads authentication events and extracts timestamps, usernames, source IPs, and outcomes.
-2. Identifies failed authentication events.
-3. Groups events by source IP address.
-4. Counts failures within a sliding time window.
-5. Emits an alert when the configured threshold is reached.
-The threshold and window should be treated as experimental parameters. Lower thresholds can detect more activity but may increase false positives; higher thresholds may miss slower or less frequent attempts.
-Evaluation
-The evaluation utilities are intended to compare detector output against labelled examples. Common classification metrics include:
-- Precision: proportion of predicted positive cases that are true positives.
-- Recall: proportion of true positive cases that are detected.
-- F1-score: harmonic mean of precision and recall.
-- False-positive rate (FPR): proportion of actual negative cases incorrectly flagged.
-Report the dataset source, number of events, label-generation method, threshold, time window, and evaluation procedure alongside any results. Synthetic or very small datasets are useful for functional tests but are not sufficient to establish generalizable real-world performance.
-Research reproducibility checklist
-For each experiment, record:
-- Dataset name, provenance, and whether it is synthetic or real.
-- Data-cleaning and parsing rules.
-- Train/test separation or evaluation split, if applicable.
-- Detection threshold and time window.
-- Definitions of positive and negative cases.
-- TP, TN, FP, FN, precision, recall, F1-score, and FPR where applicable.
-- Software versions, command used, and experiment date.
-- Limitations, failed cases, and known parser assumptions.
-Do not publish private, personally identifiable, or sensitive production logs. Sanitize any real log data before using it in a public repository.
-Safe lab setup
-For live-log experiments, use an isolated lab consisting only of systems you own or have explicit permission to test. Keep the FTP service on a VirtualBox host-only or internal network and avoid exposing an intentionally vulnerable service to the public internet. Use a dedicated test account and controlled failed-login attempts.
-FTP transmits credentials without encryption in its standard form. Do not use real or reused passwords in this lab. Prefer secure alternatives such as SFTP for actual file transfers.
-Limitations
-- Log formats vary between FTP servers, PAM configurations, and Linux distributions.
-- Timestamp parsing may depend on the year and timezone assumed for syslog-style timestamps.
-- A source-IP threshold is a simple baseline and does not detect every attack pattern.
-- NAT, shared networks, legitimate user mistakes, and distributed attempts can affect detection quality.
-- The dashboard and scripts should be validated against representative labelled data before operational use.
-Contributing
-Issues and pull requests are welcome. Include reproducible steps, example inputs that contain no sensitive data, expected behavior, and actual behavior when reporting bugs.
-License
-No license has been specified yet. Unless a license is added to the repository, standard copyright restrictions apply. Add a LICENSE file before explicitly granting reuse permissions.
-Author
-Rabi Bhushan Yadav
-Computer Engineering student | Cybersecurity research and detection engineering
-GitHub: @raviydvg75
+```
+
+Streamlit will display a local URL in the terminal. Open that URL in your browser to access the dashboard.
+
+## Testing with Synthetic Logs
+
+The repository includes a synthetic FTP authentication log intended for controlled testing.
+
+1. Start the dashboard.
+2. Select the log-upload or demo option supported by the application.
+3. Load `data/ftp_bruteforce_sample.log` if the file is present in the repository.
+4. Set the detection threshold to **5 failed attempts**.
+5. Set the time window to **10 minutes**.
+6. Review the events and any alerts generated by the detector.
+
+The sample data contains repeated authentication failures designed to test threshold-based detection. Results depend on whether the dashboard's parser supports the sample log format.
+
+**Important:** Synthetic data validates expected behavior on constructed examples. It does not establish how accurately the detector will perform against real-world attacks.
+
+## Detection Methodology
+
+The core detection method follows these general steps:
+
+1. Parse authentication log entries into structured events.
+2. Extract relevant fields, including timestamps, source IP addresses, usernames, and authentication outcomes.
+3. Group failed authentication events by source IP address.
+4. Examine failures within a configurable sliding time window.
+5. Generate an alert when the configured failure threshold is reached.
+6. Compare generated alerts with known labels when evaluating detection performance.
+
+### Example Configuration
+
+| Parameter | Example value |
+|---|---|
+| Failure threshold | 5 attempts |
+| Time window | 10 minutes |
+| Event type | Failed authentication |
+| Grouping field | Source IP address |
+
+These are example settings, not universal indicators of malicious activity. Legitimate users can also generate repeated failures, and attackers may evade simple threshold-based detection by distributing attempts across multiple IP addresses or time periods.
+
+## Evaluation Metrics
+
+The project uses standard classification metrics to assess detection behavior.
+
+| Metric | Meaning |
+|---|---|
+| True Positive (TP) | A malicious case correctly detected |
+| True Negative (TN) | A benign case correctly classified |
+| False Positive (FP) | A benign case incorrectly flagged |
+| False Negative (FN) | A malicious case missed by the detector |
+| Accuracy | Proportion of all cases classified correctly |
+| Precision | Proportion of positive detections that are correct |
+| Recall | Proportion of actual positive cases detected |
+| F1-score | Harmonic mean of precision and recall |
+| False-positive rate | Proportion of actual negative cases incorrectly flagged |
+
+For cybersecurity research, accuracy should not be interpreted in isolation. Precision, recall, false-positive rate, dataset composition, and the number of evaluated cases should also be reported.
+
+## Reproducibility
+
+To make experiments easier to reproduce:
+
+- Record the Python version and dependency versions.
+- Document the dataset source and whether it is synthetic or real.
+- Record the threshold and time-window configuration for each experiment.
+- Keep evaluation labels separate from detector outputs.
+- Report TP, TN, FP, FN, and all relevant performance metrics.
+- Preserve the commands and configuration used to run each experiment.
+- Do not report results that cannot be reproduced from the available code and data.
+
+## Safe Testing Environment
+
+All live FTP testing should be performed in an isolated lab using systems you own or have explicit permission to test.
+
+For example, a controlled lab may use:
+
+- Parrot OS as the FTP server and monitoring system.
+- Kali Linux as the test client.
+- A VirtualBox Host-only or Internal Network.
+- Synthetic or explicitly authorized authentication attempts.
+
+Do not expose a deliberately vulnerable FTP service to the public internet. Do not test against third-party systems without authorization.
+
+## Limitations
+
+- Threshold-based detection may produce false positives.
+- Distributed brute-force activity may evade per-IP thresholds.
+- Detection quality depends on log format, parsing accuracy, timestamps, and event labels.
+- Synthetic datasets do not represent the full complexity of production environments.
+- Results from small test datasets should not be generalized to real-world performance.
+- This prototype is not a replacement for a production security monitoring system.
+
+## Future Improvements
+
+Potential extensions include:
+
+- Support for additional FTP server log formats.
+- More robust parsing and duplicate-event handling.
+- Testing with larger, documented datasets.
+- Precision-recall and threshold comparison visualizations.
+- Detection based on multiple behavioral indicators.
+- Automated regression tests for log parsing and detection.
+- Better handling of log rotation and incremental ingestion.
+- Comparison with alternative detection approaches.
+
+## Research Context
+
+This project is part of a cybersecurity research and evaluation effort exploring reproducible detection methods for FTP brute-force activity.
+
+The objective is to connect practical implementation with measurable evaluation, clear limitations, and reproducible experiments. Any claims about detection effectiveness should be supported by documented datasets, experimental settings, and results.
+
+## Author
+
+**Rabi Bhushan Yadav**
+
+Computer Engineering Student | Cybersecurity Research and Detection Engineering
+
+GitHub: [@raviydvg75](https://github.com/raviydvg75)
+
+## License
+
+No license has been specified yet. Until a license is added, do not assume that others have permission to redistribute or reuse this repository's code.
