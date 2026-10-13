@@ -1,0 +1,36 @@
+{
+  "dataset": "synthetic FTP authentication scenarios",
+  "unit_of_analysis": "source IP",
+  "threshold": 5,
+  "window_minutes": 10,
+  "events_processed": 23,
+  "alerts_generated": 2,
+  "metrics": {
+    "samples": 6,
+    "true_positives": 2,
+    "true_negatives": 4,
+    "false_positives": 0,
+    "false_negatives": 0,
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1_score": 1.0,
+    "false_positive_rate": 0.0
+  },
+  "alerts": [
+    {
+      "source_ip": "192.0.2.10",
+      "start_time": "2026-10-12T10:00:00+00:00",
+      "end_time": "2026-10-12T10:04:00+00:00",
+      "failure_count": 5,
+      "alert": "possible_ftp_bruteforce"
+    },
+    {
+      "source_ip": "192.0.2.50",
+      "start_time": "2026-10-12T10:00:00+00:00",
+      "end_time": "2026-10-12T10:10:00+00:00",
+      "failure_count": 5,
+      "alert": "possible_ftp_bruteforce"
+    }
+  ]
+}
