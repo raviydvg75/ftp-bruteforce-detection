@@ -3,6 +3,11 @@
     "threshold": 3,
     "window_minutes": 10,
     "alerts_generated": 3,
+    "flagged_source_ips": [
+      "192.0.2.10",
+      "192.0.2.40",
+      "192.0.2.50"
+    ],
     "metrics": {
       "samples": 6,
       "true_positives": 2,
@@ -20,6 +25,11 @@
     "threshold": 4,
     "window_minutes": 10,
     "alerts_generated": 3,
+    "flagged_source_ips": [
+      "192.0.2.10",
+      "192.0.2.40",
+      "192.0.2.50"
+    ],
     "metrics": {
       "samples": 6,
       "true_positives": 2,
@@ -37,6 +47,10 @@
     "threshold": 5,
     "window_minutes": 10,
     "alerts_generated": 2,
+    "flagged_source_ips": [
+      "192.0.2.10",
+      "192.0.2.50"
+    ],
     "metrics": {
       "samples": 6,
       "true_positives": 2,
@@ -54,6 +68,7 @@
     "threshold": 6,
     "window_minutes": 10,
     "alerts_generated": 0,
+    "flagged_source_ips": [],
     "metrics": {
       "samples": 6,
       "true_positives": 0,

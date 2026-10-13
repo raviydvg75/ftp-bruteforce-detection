@@ -27,7 +27,7 @@ def main():
         alerts = detect_bruteforce(
             events, threshold=threshold, window_minutes=10
         )
-        alerted_ips = {alert["source_ip"] for alert in alerts}
+        alerted_ips = sorted({alert["source_ip"] for alert in alerts})
         predicted = [
             int(row["source_ip"] in alerted_ips) for row in labels
         ]
@@ -36,11 +36,15 @@ def main():
             "threshold": threshold,
             "window_minutes": 10,
             "alerts_generated": len(alerts),
+            "flagged_source_ips": alerted_ips,
             "metrics": calculate_metrics(actual, predicted),
         })
 
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT.write_text(json.dumps(results, indent=2) + "\n", encoding="utf-8")
+    OUTPUT.write_text(
+        json.dumps(results, indent=2) + "\n",
+        encoding="utf-8",
+    )
     print(json.dumps(results, indent=2))
     print(f"\nSaved results to: {OUTPUT}")
 
